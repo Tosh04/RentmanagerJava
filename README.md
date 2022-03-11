@@ -6,10 +6,10 @@ marion.benoit@epfedu.fr
 
 Etat actuel du projet :
 
-Tous les boutnons (ajouter, détails, modifier et supprimer) fonctionnent pour clients, véhicules et réservations
-Il n'y a pas de bouton détail pour réservations car je ne trouve pas ça utile
-L'affichage du nombre de clients, voitures et réservations se met bien à jour
-Par contre il n'y a pas de contraintes (comme avoir plus de 18 anns pour s'inscrire) ni de tests par manque de temps
+Tous les boutnons (ajouter, détails, modifier et supprimer) fonctionnent pour clients, véhicules et réservations.
+Il n'y a pas de bouton détail pour réservations car je ne trouve pas ça utile.
+L'affichage du nombre de clients, voitures et réservations se met bien à jour.
+Par contre il n'y a pas de contraintes (comme avoir plus de 18 anns pour s'inscrire) ni de tests par manque de temps.
 
 
 
