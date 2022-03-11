@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.epf.rentmanager.dao.ReservationDao;
 import com.epf.rentmanager.exception.DaoException;
 import com.epf.rentmanager.exception.ServiceException;
+import com.epf.rentmanager.model.Client;
 import com.epf.rentmanager.model.Reservation;
 
 @Service
@@ -62,5 +63,32 @@ public class ReservationService {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public long count() throws ServiceException {
+		try {
+			return this.reservationDao.count();
+		}catch (DaoException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	public long delete(int id) throws ServiceException {
+		try {
+			return this.reservationDao.delete(id);
+		}catch (DaoException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	public long update(Reservation reservation) throws ServiceException {
+		try {
+			return this.reservationDao.update(reservation);
+		}catch (DaoException e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 }

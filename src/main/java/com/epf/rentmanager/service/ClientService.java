@@ -64,9 +64,27 @@ public class ClientService {
 	}
 	
 	
-	public long delete(Client client) throws ServiceException {
+	public long delete(int id) throws ServiceException {
 		try {
-			return this.clientDao.delete(client);
+			return this.clientDao.delete(id);
+		}catch (DaoException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	public long count() throws ServiceException {
+		try {
+			return this.clientDao.count();
+		}catch (DaoException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	public long update(Client client) throws ServiceException {
+		try {
+			return this.clientDao.update(client);
 		}catch (DaoException e) {
 			e.printStackTrace();
 		}

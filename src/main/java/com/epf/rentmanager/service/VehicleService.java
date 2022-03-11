@@ -54,13 +54,32 @@ public class VehicleService {
 	}
 	
 	
-	public long delete(Vehicle vehicle) throws ServiceException {
+	public long delete(int id) throws ServiceException {
 		try {
-			return this.vehicleDao.delete(vehicle);
+			return this.vehicleDao.delete(id);
 		}catch (DaoException e) {
 			e.printStackTrace();
 		}
 		return 0;
+	}
+	
+	public long count() throws ServiceException {
+		try {
+			return this.vehicleDao.count();
+		}catch (DaoException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	public long update(Vehicle vehicle) throws ServiceException {
+		try {
+			return this.vehicleDao.update(vehicle);
+		}catch (DaoException e) {
+			e.printStackTrace();
+		}
+		return 0;
+		
 	}
 	
 }

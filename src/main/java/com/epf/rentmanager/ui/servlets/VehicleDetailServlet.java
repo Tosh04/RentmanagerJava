@@ -22,20 +22,17 @@ import com.epf.rentmanager.service.ClientService;
 import com.epf.rentmanager.service.ReservationService;
 import com.epf.rentmanager.service.VehicleService;
 
-@WebServlet("/users/details")
+@WebServlet("/cars/details")
 
-public class UserDetailServlet extends HttpServlet {
-
-	public UserDetailServlet() {
-	}
-
+public class VehicleDetailServlet extends HttpServlet {
+	
 	@Autowired
 	VehicleService vehicleService;
 	@Autowired
 	ReservationService reservationService;
 	@Autowired
 	ClientService clientService;
-
+	
 	@Override
 	public void init() throws ServletException {
 		super.init();
@@ -50,27 +47,27 @@ public class UserDetailServlet extends HttpServlet {
 		int id = Integer.parseInt(request.getParameter("id"));
 		
 		List<Reservation> listRents = new ArrayList<>();
-		List<Vehicle> listVehicle = new ArrayList<>();
+		List<Client> listClient = new ArrayList<>();
 
-		Client client = new Client();
+		Vehicle vehicle = new Vehicle();
 
 		try {
-			client = clientService.findById(id);
-			listRents = reservationService.findResaByClientId(id);
+			vehicle = vehicleService.findById(id);
+			listRents = reservationService.findResaByVehicleId(id);
 
 			for (int i = 0; i < listRents.size(); i++) {
-				listVehicle.add(vehicleService.findById(listRents.get(i).getVehicle_id()));
+				listClient.add(clientService.findById(listRents.get(i).getClient_id()));
 			}
 			int nbRents = listRents.size();
-			int nbVehicle = listVehicle.size();
+			int nbClient = listClient.size();
 			
-			request.setAttribute("user", this.clientService.findById(id));
+			request.setAttribute("car", this.vehicleService.findById(id));
 			request.setAttribute("listRents", listRents);
-			request.setAttribute("listVehicle", listVehicle);
+			request.setAttribute("listClient", listClient);
 			request.setAttribute("nbRents", nbRents);
-			request.setAttribute("nbVehicle", nbVehicle);
+			request.setAttribute("nbClient", nbClient);
 
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/users/details.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/vehicles/details.jsp");
 			dispatcher.forward(request, response);
 		} catch (ServiceException e) {
 		}
@@ -82,3 +79,4 @@ public class UserDetailServlet extends HttpServlet {
 
 	}
 }
+

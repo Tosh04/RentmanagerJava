@@ -26,8 +26,6 @@ public class UserServlet extends HttpServlet{
 		super.init();
 		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
 	}
-
-//	ClientService clientService = ClientService.getInstance();
 	
 	private static final long serialVersionUID = 1L;
 	

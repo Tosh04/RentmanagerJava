@@ -28,6 +28,9 @@ public class VehicleDao {
 	private static final String DELETE_VEHICLE_QUERY = "DELETE FROM Vehicle WHERE id=?;";
 	private static final String FIND_VEHICLE_QUERY = "SELECT id, constructeur, nb_places FROM Vehicle WHERE id=?;";
 	private static final String FIND_VEHICLES_QUERY = "SELECT id, constructeur, nb_places FROM Vehicle;";
+	private static final String COUNT_VEHICLE_QUERY = "SELECT COUNT(id) AS nb_vehicle FROM Vehicle;";
+	private static final String UPDATE_VEHICLE_QUERY = "UPDATE Vehicle SET constructeur = ?, nb_places = ? WHERE id=?;";
+
 	
 	public long create(Vehicle vehicle) throws DaoException {
 		try {
@@ -47,14 +50,14 @@ public class VehicleDao {
 	}
 
 	
-	public long delete(Vehicle vehicle) throws DaoException {
+	public long delete(int id) throws DaoException {
 		try {
 			Connection conn = ConnectionManager.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(DELETE_VEHICLE_QUERY);
 			
-			pstmt.setInt(1, vehicle.getId());
+			pstmt.setInt(1, id);
 			
-			pstmt.executeQuery();
+			return pstmt.executeUpdate();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -116,5 +119,42 @@ public class VehicleDao {
 		return null;
 	}
 	
+	public long count() throws DaoException {
+		int nb_vehicle=1;
+		try {
+			
+			Connection conn = ConnectionManager.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(COUNT_VEHICLE_QUERY);
+			
+			ResultSet rs = pstmt.executeQuery();
+						
+			while (rs.next()) {
+				nb_vehicle = rs.getInt(nb_vehicle);
+			}
+			
+			return nb_vehicle;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	public long update(Vehicle vehicle) throws DaoException {
+		try {
+			Connection conn = ConnectionManager.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(UPDATE_VEHICLE_QUERY);
+			
+			pstmt.setString(1, vehicle.getConstructeur());
+			pstmt.setInt(2, vehicle.getNb_places());
+			pstmt.setInt(3, vehicle.getId());
+
+			
+			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
 
 }

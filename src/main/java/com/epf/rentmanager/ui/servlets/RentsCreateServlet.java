@@ -71,7 +71,7 @@ public class RentsCreateServlet extends HttpServlet{
 		begin = LocalDate.parse(request.getParameter("begin"), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 		end = LocalDate.parse(request.getParameter("end"), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
-		Reservation reservation = new Reservation(car, client, begin, end);
+		Reservation reservation = new Reservation(client, car, begin, end);
 
 		try {
 			reservationService.create(reservation);

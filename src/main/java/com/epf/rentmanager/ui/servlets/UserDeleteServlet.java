@@ -12,19 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.epf.rentmanager.exception.ServiceException;
+import com.epf.rentmanager.model.Client;
 import com.epf.rentmanager.service.ClientService;
-import com.epf.rentmanager.service.ReservationService;
-import com.epf.rentmanager.service.VehicleService;
 
-@WebServlet("/home")
-public class HomeServlet extends HttpServlet {
+@WebServlet("/users/delete")
 
+public class UserDeleteServlet extends HttpServlet {
 	@Autowired
 	ClientService clientService;
-	@Autowired
-	VehicleService vehicleService;
-	@Autowired
-	ReservationService reservationService;
 
 	@Override
 	public void init() throws ServletException {
@@ -32,21 +27,22 @@ public class HomeServlet extends HttpServlet {
 		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
 	}
 
-	private static final String home = "/WEB-INF/views/home.jsp";
+	private static final long serialVersionUID = 1L;
 
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
 		try {
-
-			request.setAttribute("nbUsers", this.clientService.count());
-			request.setAttribute("nbVehicles", this.vehicleService.count());
-			request.setAttribute("nbRents", this.reservationService.count());
-
 			
+			int id = Integer.parseInt(request.getParameter("id"));
+			
+			this.clientService.delete(id);
+
 		} catch (ServiceException e) {
 			e.printStackTrace();
 		}
-		getServletContext().getRequestDispatcher(home).forward(request, response);
+		response.sendRedirect("http://localhost:8080/rentmanager/users");
 
 	}
 }

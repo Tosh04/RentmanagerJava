@@ -30,7 +30,10 @@ public class ReservationDao {
 	private static final String FIND_RESERVATIONS_BY_VEHICLE_QUERY = "SELECT id, client_id, debut, fin FROM Reservation WHERE vehicle_id=?;";
 	private static final String FIND_RESERVATIONS_QUERY = "SELECT id, client_id, vehicle_id, debut, fin FROM Reservation;";
 	private static final String FIND_RESERVATION_QUERY = "SELECT id, client_id, vehicle_id, debut, fin FROM Reservation WHERE id=?;";
-		
+	private static final String COUNT_RESERVATION_QUERY = "SELECT COUNT(id) AS nb_rent FROM Reservation;";
+	private static final String UPDATE_RESERVATION_QUERY = "UPDATE Reservation SET client_id = ?, vehicle_id = ?, debut = ?, fin = ? WHERE id=?;";
+
+	
 	public long create(Reservation reservation) throws DaoException {
 		try {
 			Connection conn = ConnectionManager.getConnection();
@@ -50,14 +53,14 @@ public class ReservationDao {
 		return 0;
 	}
 	
-	public long delete(Reservation reservation) throws DaoException {
+	public long delete(int id) throws DaoException {
 		try {
 			Connection conn = ConnectionManager.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(DELETE_RESERVATION_QUERY);
 			
-			pstmt.setInt(1, reservation.getId());
+			pstmt.setInt(1, id);
 			
-			pstmt.executeQuery();
+			return pstmt.executeUpdate();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -105,12 +108,11 @@ public class ReservationDao {
 			while (rs.next()) {
 			
 			Integer reservationId = rs.getInt("id");
-			Integer reservationClientId = rs.getInt("client_id");
 			Integer reservationVehicleId = rs.getInt("vehicle_id");
 			LocalDate reservationDebut = rs.getDate("debut").toLocalDate();
 			LocalDate reservationFin = rs.getDate("fin").toLocalDate();
 			
-			Reservation reservation = new Reservation(reservationId, reservationClientId, reservationVehicleId, reservationDebut, reservationFin);
+			Reservation reservation = new Reservation(reservationId, clientId, reservationVehicleId, reservationDebut, reservationFin);
 			
 			listReservation.add(reservation);
 
@@ -127,7 +129,7 @@ public class ReservationDao {
 	public List<Reservation> findResaByVehicleId(int vehicleId) throws DaoException {
 		try {
 			Connection conn = ConnectionManager.getConnection();
-			PreparedStatement pstmt = conn.prepareStatement(FIND_RESERVATIONS_BY_CLIENT_QUERY);
+			PreparedStatement pstmt = conn.prepareStatement(FIND_RESERVATIONS_BY_VEHICLE_QUERY);
 			
 			pstmt.setInt(1, vehicleId);
 			
@@ -139,11 +141,10 @@ public class ReservationDao {
 			
 			Integer reservationId = rs.getInt("id");
 			Integer reservationClientId = rs.getInt("client_id");
-			Integer reservationVehicleId = rs.getInt("vehicle_id");
 			LocalDate reservationDebut = rs.getDate("debut").toLocalDate();
 			LocalDate reservationFin = rs.getDate("fin").toLocalDate();
 			
-			Reservation reservation = new Reservation(reservationId, reservationClientId, reservationVehicleId, reservationDebut, reservationFin);
+			Reservation reservation = new Reservation(reservationId, reservationClientId, vehicleId, reservationDebut, reservationFin);
 			
 			listReservation.add(reservation);
 
@@ -185,4 +186,43 @@ public class ReservationDao {
 		return null;
 	}
 	
+	public long count() throws DaoException {
+		int nb_rents=1;
+		try {
+			
+			Connection conn = ConnectionManager.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(COUNT_RESERVATION_QUERY);
+			
+			ResultSet rs = pstmt.executeQuery();
+						
+			while (rs.next()) {
+				nb_rents = rs.getInt(nb_rents);
+			}
+			
+			return nb_rents;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	public long update(Reservation reservation) throws DaoException {
+		try {
+			Connection conn = ConnectionManager.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(UPDATE_RESERVATION_QUERY);
+			
+			pstmt.setInt(1, reservation.getClient_id());
+			pstmt.setInt(2, reservation.getVehicle_id());
+			pstmt.setDate(3, Date.valueOf(reservation.getDebut()));
+			pstmt.setDate(4, Date.valueOf(reservation.getFin()));
+			pstmt.setInt(5, reservation.getId());
+
+			
+			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
 }

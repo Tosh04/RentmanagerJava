@@ -8,6 +8,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import com.epf.rentmanager.configuration.AppConfiguration;
 import com.epf.rentmanager.exception.ServiceException;
 import com.epf.rentmanager.model.Client;
+import com.epf.rentmanager.model.Reservation;
 import com.epf.rentmanager.model.Vehicle;
 import com.epf.rentmanager.service.ClientService;
 import com.epf.rentmanager.service.ReservationService;
@@ -24,9 +25,13 @@ public class Main {
 
 		
 		try {
-			//vehicleService.create(new Vehicle ("renaud", Integer.valueOf(4)));
-			System.out.println(vehicleService.findAll());
-		
+//			reservationService.create(new Reservation (Integer.valueOf(9), Integer.valueOf(3), LocalDate.of(2022, 01, 21), LocalDate.of(2022,01,31)));
+//			clientService.count();
+//			clientService.delete(4);
+//			System.out.println(vehicleService.findById(5));
+			Vehicle vehicle = new Vehicle(3, "Seat", 2);
+			vehicleService.update(vehicle);
+			System.out.println(vehicleService.findAll());		
 		} catch (ServiceException e) {
 			e.printStackTrace();
 		}
